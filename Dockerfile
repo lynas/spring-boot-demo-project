@@ -6,7 +6,8 @@
 #ENTRYPOINT ["java","-jar","app.jar"]
 
 # Use the official OpenJDK 11 image as the base image
-FROM gradle:jdk17-alpine
+#FROM gradle:jdk17-alpine
+FROM ubuntu:latest
 
 ENV PORT=8080
 EXPOSE 8080
@@ -14,28 +15,28 @@ EXPOSE 8080
 #WORKDIR /app
 #
 ## Copy the build.gradle and settings.gradle files
-#COPY build.gradle.kts .
-#COPY settings.gradle.kts .
-#COPY gradlew .
-#
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY gradlew .
+
 ## Copy the src directory
-#COPY src src
-#COPY gradle gradle
-#RUN apt-get update
-#RUN apt-get install openjdk-17-jdk -y
-##RUN apt-get update && apt-get install -y xargs
+COPY src src
+COPY gradle gradle
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+#RUN apt-get update && apt-get install -y xargs
 #
 #
 ## Run the gradle build command
 #RUN echo bootJarRunning
-#RUN ./gradlew bootJar
+RUN ./gradlew bootJar
 #
 ## Copy the JAR file to /app/app.jar
-#COPY build/libs/demo-1.jar app.jar
+COPY build/libs/demo-1.jar app.jar
 #
 ## Set the entrypoint to java -jar app.jar
-#ENTRYPOINT ["java", "-jar", "app.jar"]
-RUN gradlew bootJar
-RUN java -version
-COPY --from=build /libs/demo-1.jar demo.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
+#RUN gradlew bootJar
+#RUN java -version
+#COPY --from=build /libs/demo-1.jar demo.jar
+#ENTRYPOINT ["java", "-jar", "app.jar"]
