@@ -8,7 +8,7 @@
 # Use the official OpenJDK 11 image as the base image
 FROM ubuntu:latest
 
-EXPOSE 80
+EXPOSE 8080
 # Set the working directory to /app
 WORKDIR /app
 
