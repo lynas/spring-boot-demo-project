@@ -1,42 +1,23 @@
-#FROM eclipse-temurin:latest
-#VOLUME /tmp
-#ARG JAR_FILE
-#RUN "gradlew bootJar"
-#COPY demo-0.0.1-SNAPSHOT.jar app.jar
-#ENTRYPOINT ["java","-jar","app.jar"]
+# Use the official Gradle image to build the application
+FROM gradle:7-jdk17 AS builder
 
-# Use the official OpenJDK 11 image as the base image
-#FROM gradle:jdk17-alpine
-FROM ubuntu:latest
-
-ENV PORT=8080
-EXPOSE 8080
-## Set the working directory to /app
+# Set the working directory to the root of the project
 #WORKDIR /app
-#
-## Copy the build.gradle and settings.gradle files
-COPY build.gradle.kts .
-COPY settings.gradle.kts .
-COPY gradlew .
 
-## Copy the src directory
-COPY src src
-COPY gradle gradle
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-#RUN apt-get update && apt-get install -y xargs
-#
-#
-## Run the gradle build command
-#RUN echo bootJarRunning
-RUN ./gradlew bootJar
-#
-## Copy the JAR file to /app/app.jar
+# Copy the build.gradle and settings.gradle files
+COPY . .
+
+# Build the application
+RUN gradle bootJar --no-daemon
+
+# Create a new image using a lightweight JRE image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory to /app
+#WORKDIR /app
+
+# Copy the built JAR file from the builder image
 COPY build/libs/demo-1.jar app.jar
-#
-## Set the entrypoint to java -jar app.jar
+
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-#RUN gradlew bootJar
-#RUN java -version
-#COPY --from=build /libs/demo-1.jar demo.jar
-#ENTRYPOINT ["java", "-jar", "app.jar"]
