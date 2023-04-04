@@ -27,10 +27,10 @@ RUN apt-get install openjdk-17-jdk -y
 
 
 # Run the gradle build command
-RUN ./gradlew bootRun
+RUN ./gradlew bootJar
 
 # Copy the JAR file to /app/app.jar
-#COPY build/libs/*.jar app.jar
+COPY build/libs/demo-1.jar app.jar
 
 # Set the entrypoint to java -jar app.jar
-#ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
