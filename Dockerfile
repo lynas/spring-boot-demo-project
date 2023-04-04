@@ -27,6 +27,7 @@ RUN apt-get install openjdk-17-jdk -y
 
 
 # Run the gradle build command
+RUN echo bootJarRunning
 RUN ./gradlew bootJar
 
 # Copy the JAR file to /app/app.jar
