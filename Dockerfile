@@ -6,7 +6,7 @@
 #ENTRYPOINT ["java","-jar","app.jar"]
 
 # Use the official OpenJDK 11 image as the base image
-FROM gradle:7.6.1-jdk17-alpine
+FROM gradle:jdk17-alpine
 
 ENV PORT=8080
 EXPOSE 8080
